@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Punto - Ristorante Pizzeria</title>
+    <!-- إضافة الخطوط (إيطالي، إنجليزي، عربي، روسي) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Cairo:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles & Variables */
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f1c40f;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(20, 20, 20, 0.65);
+            --glass-border: rgba(212, 175, 55, 0.2);
+            --text-light: #f4f4f4;
+            --text-muted: #aaaaaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Lato', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: font-family 0.3s ease;
+        }
+
+        /* =========================================
+           تأثيرات الخلفية المتحركة (Animated Background)
+           ========================================= */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: floatOrb 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 175, 55, 0.25); /* ذهبي */
+            top: -100px;
+            left: -100px;
+            animation-duration: 15s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 215, 0, 0.15); /* ذهبي فاتح */
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+            animation-duration: 25s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: rgba(139, 69, 19, 0.2); /* بني دافئ */
+            top: 40%;
+            left: 60%;
+            animation-delay: -10s;
+            animation-duration: 30s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 120px) scale(1.1); }
+            100% { transform: translate(-60px, -60px) scale(0.9); }
+        }
+
+        /* =========================================
+           دعم اللغة العربية (RTL)
+           ========================================= */
+        body[dir="rtl"] {
+            font-family: 'Cairo', sans-serif;
+            text-align: right;
+        }
+
+        body[dir="rtl"] .menu-item {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .item-info {
+            text-align: right;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+        }
+
+        body[dir="rtl"] h1, body[dir="rtl"] h2, body[dir="rtl"] h3 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* =========================================
+           زر تغيير اللغة (Language Switcher)
+           ========================================= */
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 1001;
+        }
+        
+        body[dir="rtl"] .lang-switcher {
+            right: auto;
+            left: 20px;
+        }
+
+        .lang-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* =========================================
+           الهيدر (Header)
+           ========================================= */
+        header {
+            text-align: center;
+            padding: 70px 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1920&q=80') center/cover;
+            border-bottom: 2px solid var(--gold);
+            position: relative;
+        }
+
+        .logo-box {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: var(--gold);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: #ddd;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           قائمة التنقل الاحترافية (Professional Navigation)
+           ========================================= */
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 15px 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 10px;
+            padding: 0 20px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 18px;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover {
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        nav a:hover::after {
+            width: 60%;
+        }
+
+        /* =========================================
+           حاوية المنيو (Menu Container)
+           ========================================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* =========================================
+           أقسام المنيو (Glassmorphism Sections)
+           ========================================= */
+        .menu-section {
+            margin-bottom: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .menu-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 15px auto 0;
+        }
+
+        /* Category Image */
+        .category-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            transition: transform 0.5s ease;
+        }
+
+        .menu-section:hover .category-image {
+            transform: scale(1.02);
+        }
+
+        /* =========================================
+           عناصر المنيو (Menu Items)
+           ========================================= */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 40px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            border-bottom-color: var(--gold);
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        body[dir="rtl"] .menu-item:hover {
+            padding-right: 5px;
+        }
+
+        .item-info {
+            max-width: 80%;
+        }
+
+        .item-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+
+        .menu-item:hover .item-name {
+            color: var(--gold-light);
+        }
+
+        .item-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+            display: block;
+            margin-top: 6px;
+            font-weight: 300;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        body[dir="rtl"] .item-price {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* =========================================
+           الفوتر (Footer)
+           ========================================= */
+        footer {
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 2px solid var(--gold);
+            margin-top: 40px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+
+        footer p {
+            margin-bottom: 12px;
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .contact-number {
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .note {
+            font-size: 0.95rem;
+            color: #888;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* =========================================
+           التجاوب مع الشاشات (Responsive)
+           ========================================= */
+        @media (max-width: 992px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .lang-switcher {
+                top: 10px;
+                right: 10px;
+                gap: 5px;
+            }
+            .lang-btn {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+            body[dir="rtl"] .lang-switcher {
+                right: auto;
+                left: 10px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .menu-section {
+                padding: 20px;
+            }
+            nav a {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الخلفية المتحركة -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- أزرار تغيير اللغة -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="changeLanguage('it', this)">IT</button>
+        <button class="lang-btn" onclick="changeLanguage('en', this)">EN</button>
+        <button class="lang-btn" onclick="changeLanguage('ar', this)">AR</button>
+        <button class="lang-btn" onclick="changeLanguage('ru', this)">RU</button>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-box">IL PUNTO</div>
+        <h1 data-i18n="header_title">RISTORANTE PIZZERIA</h1>
+        <p data-i18n="header_subtitle">FOOD MENU</p>
+    </header>
+
+    <!-- قائمة التنقل الاحترافية -->
+    <nav>
+        <ul>
+            <li><a href="#antipasti" data-i18n="nav_antipasti">Antipasti</a></li>
+            <li><a href="#primi" data-i18n="nav_primi">Primi Piatti</a></li>
+            <li><a href="#pasta" data-i18n="nav_pasta">Pasta</a></li>
+            <li><a href="#secondi" data-i18n="nav_secondi">Secondi</a></li>
+            <li><a href="#pizza" data-i18n="nav_pizza">Pizza</a></li>
+            <li><a href="#contorni" data-i18n="nav_contorni">Contorni</a></li>
+            <li><a href="#dolci" data-i18n="nav_dolci">Dolci & Bevande</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <!-- Antipasti Section -->
+        <section id="antipasti" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_antipasti">Antipasti / Starters</h2>
+            <img src="https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=1200&q=80" alt="Antipasti" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="antipasti_1_name">Bruschette al pomodoro</span>
+                        <span class="item-desc" data-i18n="antipasti_1_desc">Toasted bread with fresh tomato</span>
+                    </div>
+                    <span class="item-price">130</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="antipasti_2_name">Bruschette al ombrina</span>
+                        <span class="item-desc" data-i18n="antipasti_2_desc">Toasted bread with marinated fish</span>
+                    </div>
+                    <span class="item-price">170</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="antipasti_3_name">Arancini di riso</span>
+                        <span class="item-desc" data-i18n="antipasti_3_desc">Fried rice croquettes with meat sauce and mushrooms</span>
+                    </div>
+                    <span class="item-price">160</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="antipasti_4_name">Crocchette di patate</span>
+                        <span class="item-desc" data-i18n="antipasti_4_desc">Fried potatoes croquettes</span>
+                    </div>
+                    <span class="item-price">120</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="antipasti_5_name">Scamorza grigliata</span>
+                        <span class="item-desc" data-i18n="antipasti_5_desc">Grilled scamorza cheese</span>
+                    </div>
+                    <span class="item-price">150</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="antipasti_6_name">Insalata Caprese</span>
+                        <span class="item-desc" data-i18n="antipasti_6_desc">Fresh mozzarella cheese, fresh tomato</span>
+                    </div>
+                    <span class="item-price">290</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Primi Piatti Section -->
+        <section id="primi" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_primi">Primi Piatti / Fresh Homemade Pasta</h2>
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1200&q=80" alt="Primi Piatti" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="primi_1_name">Gnocchi pomodoro e basilico</span>
+                        <span class="item-desc" data-i18n="primi_1_desc">Gnocchi with tomato and basil</span>
+                    </div>
+                    <span class="item-price">250</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="primi_2_name">Gnocchi ragu o sorrentina</span>
+                        <span class="item-desc" data-i18n="primi_2_desc">Gorgonzola o funghi (meat sauce / gorgonzola / mushrooms)</span>
+                    </div>
+                    <span class="item-price">280</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="primi_3_name">Ravioli ricotta e spinaci</span>
+                        <span class="item-desc" data-i18n="primi_3_desc">Stuffed with ricotta cheese/spinach or gorgonzola/mushrooms</span>
+                    </div>
+                    <span class="item-price">290</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="primi_4_name">Lasagna al ragu</span>
+                        <span class="item-desc" data-i18n="primi_4_desc">Lasagna Bolognese (Meat sauce)</span>
+                    </div>
+                    <span class="item-price">250</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="primi_5_name">Lasagna vegetariana</span>
+                        <span class="item-desc" data-i18n="primi_5_desc">Vegetarian Lasagna</span>
+                    </div>
+                    <span class="item-price">180</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pasta di grano duro Section -->
+        <section id="pasta" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_pasta">Pasta di grano duro / Durum Wheat Pasta</h2>
+            <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=1200&q=80" alt="Pasta" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pasta_1_name">Spaghetti vongole</span>
+                        <span class="item-desc" data-i18n="pasta_1_desc">Spaghetti with clams</span>
+                    </div>
+                    <span class="item-price">390</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pasta_2_name">Spaghetti il punto</span>
+                        <span class="item-desc" data-i18n="pasta_2_desc">Spaghetti with seafood</span>
+                    </div>
+                    <span class="item-price">450</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pasta_3_name">Penne all' arrabbiata</span>
+                        <span class="item-desc" data-i18n="pasta_3_desc">Penne with spicy tomato sauce</span>
+                    </div>
+                    <span class="item-price">180</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secondi Piatti Section -->
+        <section id="secondi" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_secondi">Secondi Piatti / Main Courses</h2>
+            <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1200&q=80" alt="Secondi" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="secondi_1_name">Petto di pollo grigliato</span>
+                        <span class="item-desc" data-i18n="secondi_1_desc">Sliced grilled chicken</span>
+                    </div>
+                    <span class="item-price">250</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="secondi_2_name">Petto di pollo in salsa</span>
+                        <span class="item-desc" data-i18n="secondi_2_desc">Lemon sauce, Gorgonzola cheese, Black pepper, Mushroom, Balsamic Vinegar</span>
+                    </div>
+                    <span class="item-price">330</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="secondi_3_name">Filetto di manzo grigliato</span>
+                        <span class="item-desc" data-i18n="secondi_3_desc">Grilled beef filet</span>
+                    </div>
+                    <span class="item-price">480</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="secondi_4_name">Filetto di manzo al gorgonzola</span>
+                        <span class="item-desc" data-i18n="secondi_4_desc">Gorgonzola cheese, Black pepper, Mushroom, Balsamic Vinegar</span>
+                    </div>
+                    <span class="item-price">530</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="secondi_5_name">Tagliata di filetto di manzo</span>
+                        <span class="item-desc" data-i18n="secondi_5_desc">Sliced grilled beef filet with rocket salad, parmesan flakes and balsamic</span>
+                    </div>
+                    <span class="item-price">490</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="secondi_6_name">Gamberoni alla griglia</span>
+                        <span class="item-desc" data-i18n="secondi_6_desc">Grilled Shrimp (Prezzo su prenotazione)</span>
+                    </div>
+                    <span class="item-price">---</span>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: #888; font-style: italic;" data-i18n="secondi_note">
+                Su prenotazione: Branzino, Polpo con patate, Gamberoni alla griglia, Calamari Gamberi fritti, granchio, aragosta.
+            </p>
+        </section>
+
+        <!-- Pizza Section -->
+        <section id="pizza" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_pizza">Pizza</h2>
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80" alt="Pizza" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pizza_1_name">Margherita</span>
+                        <span class="item-desc" data-i18n="pizza_1_desc">Mozzarella cheese and tomato sauce</span>
+                    </div>
+                    <span class="item-price">260</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pizza_2_name">Quattro formaggi</span>
+                        <span class="item-desc" data-i18n="pizza_2_desc">Four cheese (Mozzarella, rocket, parmesan flakes)</span>
+                    </div>
+                    <span class="item-price">300</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pizza_3_name">Salami</span>
+                        <span class="item-desc" data-i18n="pizza_3_desc">Salami</span>
+                    </div>
+                    <span class="item-price">280</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pizza_4_name">Tonno e cipolla</span>
+                        <span class="item-desc" data-i18n="pizza_4_desc">Tuna, onions, mozzarella, tomato sauce</span>
+                    </div>
+                    <span class="item-price">300</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="pizza_5_name">Funghi</span>
+                        <span class="item-desc" data-i18n="pizza_5_desc">Mushroom (Mozzarella cheese and tomato sauce)</span>
+                    </div>
+                    <span class="item-price">270</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contorni Section -->
+        <section id="contorni" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_contorni">Contorni / Side Dishes</h2>
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=80" alt="Contorni" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="contorni_1_name">Verdure grigliate</span>
+                        <span class="item-desc" data-i18n="contorni_1_desc">Grilled vegetables</span>
+                    </div>
+                    <span class="item-price">60</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="contorni_2_name">Patate al forno</span>
+                        <span class="item-desc" data-i18n="contorni_2_desc">Baked potatoes</span>
+                    </div>
+                    <span class="item-price">60</span>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="contorni_3_name">Insalata verde o mista</span>
+                        <span class="item-desc" data-i18n="contorni_3_desc">Green salad mixed salad</span>
+                    </div>
+                    <span class="item-price">60</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dolci-Bevande Section -->
+        <section id="dolci" class="menu-section">
+            <h2 class="section-title" data-i18n="sec_dolci">Dolci-Bevande / Desserts & Drinks</h2>
+            <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=1200&q=80" alt="Tiramisu" class="category-image">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_1_name">Tiramisu</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_2_name">Flan al cioccolato</span>
+                        <span class="item-desc" data-i18n="dolci_2_desc">Chocolat flan</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_3_name">Panna cotta</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_4_name">Acqua naturale (1/2 litro)</span>
+                        <span class="item-desc" data-i18n="dolci_4_desc">Natural water 1/2 Lt</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_5_name">Acqua gassata (1/2 litro)</span>
+                        <span class="item-desc" data-i18n="dolci_5_desc">Sparkling Water 1/2 Lt</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_6_name">Acqua naturale (1 litro)</span>
+                        <span class="item-desc" data-i18n="dolci_6_desc">Natural water 1 Lt</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_7_name">Coca cola - Fanta - Sprite</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_8_name">Espresso</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_9_name">Tea</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="item-info">
+                        <span class="item-name" data-i18n="dolci_10_name">Cappuccino</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p data-i18n="footer_note_1">Prezzo non Include Servizio o Tasse</p>
+        <p class="note" data-i18n="footer_note_2">لا يوجد ضريبة ولا خدمة</p>
+        <div class="contact-number">FATHY : 01004871685</div>
+    </footer>
+
+    <!-- JavaScript for Translations and Smooth Scrolling -->
+    <script>
+        // قاموس الترجمة الشامل (إيطالي، إنجليزي، عربي، روسي)
+        const translations = {
+            it: {
+                header_title: "RISTORANTE PIZZERIA",
+                header_subtitle: "FOOD MENU",
+                nav_antipasti: "Antipasti", nav_primi: "Primi Piatti", nav_pasta: "Pasta", nav_secondi: "Secondi", nav_pizza: "Pizza", nav_contorni: "Contorni", nav_dolci: "Dolci & Bevande",
+                sec_antipasti: "Antipasti / Starters", sec_primi: "Primi Piatti / Fresh Homemade Pasta", sec_pasta: "Pasta di grano duro / Durum Wheat Pasta", sec_secondi: "Secondi Piatti / Main Courses", sec_pizza: "Pizza", sec_contorni: "Contorni / Side Dishes", sec_dolci: "Dolci-Bevande / Desserts & Drinks",
+                antipasti_1_name: "Bruschette al pomodoro", antipasti_1_desc: "Toasted bread with fresh tomato",
+                antipasti_2_name: "Bruschette al ombrina", antipasti_2_desc: "Toasted bread with marinated fish",
+                antipasti_3_name: "Arancini di riso", antipasti_3_desc: "Fried rice croquettes with meat sauce and mushrooms",
+                antipasti_4_name: "Crocchette di patate", antipasti_4_desc: "Fried potatoes croquettes",
+                antipasti_5_name: "Scamorza grigliata", antipasti_5_desc: "Grilled scamorza cheese",
+                antipasti_6_name: "Insalata Caprese", antipasti_6_desc: "Fresh mozzarella cheese, fresh tomato",
+                primi_1_name: "Gnocchi pomodoro e basilico", primi_1_desc: "Gnocchi with tomato and basil",
+                primi_2_name: "Gnocchi ragu o sorrentina", primi_2_desc: "Gorgonzola o funghi (meat sauce / gorgonzola / mushrooms)",
+                primi_3_name: "Ravioli ricotta e spinaci", primi_3_desc: "Stuffed with ricotta cheese/spinach or gorgonzola/mushrooms",
+                primi_4_name: "Lasagna al ragu", primi_4_desc: "Lasagna Bolognese (Meat sauce)",
+                primi_5_name: "Lasagna vegetariana", primi_5_desc: "Vegetarian Lasagna",
+                pasta_1_name: "Spaghetti vongole", pasta_1_desc: "Spaghetti with clams",
+                pasta_2_name: "Spaghetti il punto", pasta_2_desc: "Spaghetti with seafood",
+                pasta_3_name: "Penne all' arrabbiata", pasta_3_desc: "Penne with spicy tomato sauce",
+                secondi_1_name: "Petto di pollo grigliato", secondi_1_desc: "Sliced grilled chicken",
+                secondi_2_name: "Petto di pollo in salsa", secondi_2_desc: "Lemon sauce, Gorgonzola cheese, Black pepper, Mushroom, Balsamic Vinegar",
+                secondi_3_name: "Filetto di manzo grigliato", secondi_3_desc: "Grilled beef filet",
+                secondi_4_name: "Filetto di manzo al gorgonzola", secondi_4_desc: "Gorgonzola cheese, Black pepper, Mushroom, Balsamic Vinegar",
+                secondi_5_name: "Tagliata di filetto di manzo", secondi_5_desc: "Sliced grilled beef filet with rocket salad, parmesan flakes and balsamic",
+                secondi_6_name: "Gamberoni alla griglia", secondi_6_desc: "Grilled Shrimp (Prezzo su prenotazione)",
+                secondi_note: "Su prenotazione: Branzino, Polpo con patate, Gamberoni alla griglia, Calamari Gamberi fritti, granchio, aragosta.",
+                pizza_1_name: "Margherita", pizza_1_desc: "Mozzarella cheese and tomato sauce",
+                pizza_2_name: "Quattro formaggi", pizza_2_desc: "Four cheese (Mozzarella, rocket, parmesan flakes)",
+                pizza_3_name: "Salami", pizza_3_desc: "Salami",
+                pizza_4_name: "Tonno e cipolla", pizza_4_desc: "Tuna, onions, mozzarella, tomato sauce",
+                pizza_5_name: "Funghi", pizza_5_desc: "Mushroom (Mozzarella cheese and tomato sauce)",
+                contorni_1_name: "Verdure grigliate", contorni_1_desc: "Grilled vegetables",
+                contorni_2_name: "Patate al forno", contorni_2_desc: "Baked potatoes",
+                contorni_3_name: "Insalata verde o mista", contorni_3_desc: "Green salad mixed salad",
+                dolci_1_name: "Tiramisu", dolci_2_name: "Flan al cioccolato", dolci_2_desc: "Chocolat flan", dolci_3_name: "Panna cotta",
+                dolci_4_name: "Acqua naturale (1/2 litro)", dolci_4_desc: "Natural water 1/2 Lt", dolci_5_name: "Acqua gassata (1/2 litro)", dolci_5_desc: "Sparkling Water 1/2 Lt",
+                dolci_6_name: "Acqua naturale (1 litro)", dolci_6_desc: "Natural water 1 Lt", dolci_7_name: "Coca cola - Fanta - Sprite",
+                dolci_8_name: "Espresso", dolci_9_name: "Tea", dolci_10_name: "Cappuccino",
+                footer_note_1: "Prezzo non Include Servizio o Tasse", footer_note_2: "لا يوجد ضريبة ولا خدمة"
+            },
+            en: {
+                header_title: "ITALIAN RESTAURANT", header_subtitle: "FOOD MENU",
+                nav_antipasti: "Starters", nav_primi: "Fresh Pasta", nav_pasta: "Durum Pasta", nav_secondi: "Main Courses", nav_pizza: "Pizza", nav_contorni: "Side Dishes", nav_dolci: "Desserts & Drinks",
+                sec_antipasti: "I. Starters & Appetizers", sec_primi: "A. Fresh Homemade Pasta", sec_pasta: "B. Durum Wheat Pasta", sec_secondi: "III. Main Courses", sec_pizza: "IV. Pizza", sec_contorni: "Side Dishes", sec_dolci: "Desserts, and Drinks",
+                antipasti_1_name: "Bruschette al pomodoro", antipasti_1_desc: "Toasted bread with fresh tomato",
+                antipasti_2_name: "Bruschette al ombrina", antipasti_2_desc: "Toasted bread with marinated fish",
+                antipasti_3_name: "Arancini di riso", antipasti_3_desc: "Fried rice croquettes with meat sauce and mushrooms",
+                antipasti_4_name: "Crocchette di patate", antipasti_4_desc: "Fried potatoes croquettes",
+                antipasti_5_name: "Scamorza grigliata", antipasti_5_desc: "Grilled scamorza cheese",
+                antipasti_6_name: "Insalata Caprese", antipasti_6_desc: "Fresh mozzarella cheese, fresh tomato",
+                primi_1_name: "Gnocchi pomodoro e basilico", primi_1_desc: "Gnocchi with tomato and basil",
+                primi_2_name: "Gnocchi ragu o sorrentina", primi_2_desc: "Gorgonzola o funghi (meat sauce / gorgonzola / mushrooms)",
+                primi_3_name: "Ravioli ricotta e spinaci", primi_3_desc: "Stuffed with ricotta cheese/spinach or gorgonzola/mushrooms",
+                primi_4_name: "Lasagna al ragu", primi_4_desc: "Lasagna Bolognese (Meat sauce)",
+                primi_5_name: "Lasagna vegetariana", primi_5_desc: "Vegetarian Lasagna",
+                pasta_1_name: "Spaghetti vongole", pasta_1_desc: "Spaghetti with clams",
+                pasta_2_name: "Spaghetti il punto", pasta_2_desc: "Spaghetti with seafood",
+                pasta_3_name: "Penne all' arrabbiata", pasta_3_desc: "Penne with spicy tomato sauce",
+                secondi_1_name: "Petto di pollo grigliato", secondi_1_desc: "Sliced grilled chicken",
+                secondi_2_name: "Petto di pollo in salsa", secondi_2_desc: "Lemon sauce, Gorgonzola cheese, Black pepper, Mushroom, Balsamic Vinegar",
+                secondi_3_name: "Filetto di manzo grigliato", secondi_3_desc: "Grilled beef filet",
+                secondi_4_name: "Filetto di manzo al gorgonzola", secondi_4_desc: "Gorgonzola cheese, Black pepper, Mushroom, Balsamic Vinegar",
+                secondi_5_name: "Tagliata di filetto di manzo", secondi_5_desc: "Sliced grilled beef filet with rocket salad, parmesan flakes and balsamic",
+                secondi_6_name: "Gamberoni alla griglia", secondi_6_desc: "Grilled Shrimp (Prezzo su prenotazione)",
+                secondi_note: "Su prenotazione: Branzino, Polpo con patate, Gamberoni alla griglia, Calamari Gamberi fritti, granchio, aragosta.",
+                pizza_1_name: "Margherita", pizza_1_desc: "Mozzarella cheese and tomato sauce",
+                pizza_2_name: "Quattro formaggi", pizza_2_desc: "Four cheese (Mozzarella, rocket, parmesan flakes)",
+                pizza_3_name: "Salami", pizza_3_desc: "Salami",
+                pizza_4_name: "Tonno e cipolla", pizza_4_desc: "Tuna, onions, mozzarella, tomato sauce",
+                pizza_5_name: "Funghi", pizza_5_desc: "Mushroom (Mozzarella cheese and tomato sauce)",
+                contorni_1_name: "Verdure grigliate", contorni_1_desc: "Grilled vegetables",
+                contorni_2_name: "Patate al forno", contorni_2_desc: "Baked potatoes",
+                contorni_3_name: "Insalata verde o mista", contorni_3_desc: "Green salad mixed salad",
+                dolci_1_name: "Tiramisu", dolci_2_name: "Flan al cioccolato", dolci_2_desc: "Chocolat flan", dolci_3_name: "Panna cotta",
+                dolci_4_name: "Acqua naturale (1/2 litro)", dolci_4_desc: "Natural water 1/2 Lt", dolci_5_name: "Acqua gassata (1/2 litro)", dolci_5_desc: "Sparkling Water 1/2 Lt",
+                dolci_6_name: "Acqua naturale (1 litro)", dolci_6_desc: "Natural water 1 Lt", dolci_7_name: "Coca cola - Fanta - Sprite",
+                dolci_8_name: "Espresso", dolci_9_name: "Tea", dolci_10_name: "Cappuccino",
+                footer_note_1: "il prezzo non Include servizio o tasse il PUNTO", footer_note_2: "لا يوجد ضريبة ولا خدمة"
+            },
+            ar: {
+                header_title: "مطعم بيتزا إيطالي", header_subtitle: "قائمة الطعام",
+                nav_antipasti: "المقبلات", nav_primi: "المعكرونة الطازجة", nav_pasta: "معكرونة القمح الصلب", nav_secondi: "الأطباق الرئيسية", nav_pizza: "البيتزا", nav_contorni: "الأطباق الجانبية", nav_dolci: "الحلويات والمشروبات",
+                sec_antipasti: "أولاً: المقبلات والمشهيات", sec_primi: "أ: المعكرونة الطازجة محلية الصنع", sec_pasta: "ب: معكرونة القمح الصلب", sec_secondi: "ثالثاً: الأطباق الرئيسية", sec_pizza: "رابعاً: البيتزا", sec_contorni: "الأطباق الجانبية", sec_dolci: "الحلويات والمشروبات",
+                antipasti_1_name: "بروسكيتي بومودورو", antipasti_1_desc: "خبز محمص مع الطماطم الطازجة",
+                antipasti_2_name: "بروسكيتي أل أومبرينا", antipasti_2_desc: "خبز محمص مع السمك المتبل",
+                antipasti_3_name: "أرانشيني دي ريزو", antipasti_3_desc: "كرات الأرز المقلية مع صلصة اللحم والمشروم",
+                antipasti_4_name: "كروكيتي دي باتاتي", antipasti_4_desc: "كروكيت البطاطس المقلية",
+                antipasti_5_name: "سكامورزا جريلياتا", antipasti_5_desc: "جبن سكامورزا مشوي",
+                antipasti_6_name: "سلطة كابريزي", antipasti_6_desc: "جبن موزاريلا طازج مع الطماطم الطازجة",
+                primi_1_name: "نيوكي بومودورو إي بازيليكو", primi_1_desc: "نيوكي مع الطماطم والريحان",
+                primi_2_name: "نيوكي راجو أو سورينتينا", primi_2_desc: "صلصة اللحم أو جبن الجورجونزولا أو المشروم",
+                primi_3_name: "رافيولي ريكوتا إي سبيناشي", primi_3_desc: "محشوة بجبن الريكوتا والسبانخ أو الجورجونزولا والمشروم",
+                primi_4_name: "لازانيا راجو", primi_4_desc: "لازانيا بولونيز (صلصة اللحم)",
+                primi_5_name: "لازانيا نباتية", primi_5_desc: "لازانيا نباتية",
+                pasta_1_name: "سباجيتي فونجولي", pasta_1_desc: "سباجيتي مع المحار",
+                pasta_2_name: "سباجيتي إل بونتو", pasta_2_desc: "سباجيتي مع المأكولات البحرية",
+                pasta_3_name: "بيني أل أرابياتا", pasta_3_desc: "بيني مع صلصة الطماطم الحارة",
+                secondi_1_name: "صدر دجاج مشوي", secondi_1_desc: "شرائح دجاج مشوية",
+                secondi_2_name: "صدر دجاج بالصلصة", secondi_2_desc: "صلصة الليمون، جبن الجورجونزولا، الفلفل الأسود، المشروم، الخل البلسمي",
+                secondi_3_name: "فيليه لحم مشوي", secondi_3_desc: "فيليه لحم بقري مشوي",
+                secondi_4_name: "فيليه لحم بالجورجونزولا", secondi_4_desc: "جبن الجورجونزولا، الفلفل الأسود، المشروم، الخل البلسمي",
+                secondi_5_name: "تاجلياتا فيليه لحم", secondi_5_desc: "شرائح فيليه لحم مشوي مع سلطة الجرجير ورقائق البارميزان والخل البلسمي",
+                secondi_6_name: "جمبري مشوي", secondi_6_desc: "جمبري مشوي (السعر عند الطلب)",
+                secondi_note: "عند الطلب: قاروص، أخطبوط مع بطاطس، جمبري مشوي، كاليماري وجمبري مقلي، سلطعون، استاكوزا.",
+                pizza_1_name: "مارغريتا", pizza_1_desc: "جبن موزاريلا وصلصة طماطم",
+                pizza_2_name: "أربعة أجبان", pizza_2_desc: "أربعة أجبان (موزاريلا، جرجير، رقائق بارميزان)",
+                pizza_3_name: "سلامي", pizza_3_desc: "سلامي",
+                pizza_4_name: "تونة وبصل", pizza_4_desc: "تونة، بصل، موزاريلا، صلصة طماطم",
+                pizza_5_name: "مشروم", pizza_5_desc: "مشروم (جبن موزاريلا وصلصة طماطم)",
+                contorni_1_name: "خضروات مشوية", contorni_1_desc: "خضروات مشوية",
+                contorni_2_name: "بطاطس مخبوزة", contorni_2_desc: "بطاطس مخبوزة",
+                contorni_3_name: "سلطة خضراء أو مشكلة", contorni_3_desc: "سلطة خضراء أو مشكلة",
+                dolci_1_name: "تيراميسو", dolci_2_name: "فلان الشوكولاتة", dolci_2_desc: "فلان الشوكولاتة", dolci_3_name: "بانا كوتا",
+                dolci_4_name: "مياه طبيعية (نصف لتر)", dolci_4_desc: "مياه طبيعية 1/2 لتر", dolci_5_name: "مياه غازية (نصف لتر)", dolci_5_desc: "مياه غازية 1/2 لتر",
+                dolci_6_name: "مياه طبيعية (1 لتر)", dolci_6_desc: "مياه طبيعية 1 لتر", dolci_7_name: "كوكاكولا - فانتا - سبرايت",
+                dolci_8_name: "إسبريسو", dolci_9_name: "شاي", dolci_10_name: "كابتشينو",
+                footer_note_1: "السعر لا يشمل الخدمة أو الضريبة", footer_note_2: "لا يوجد ضريبة ولا خدمة"
+            },
+            ru: {
+                header_title: "ИТАЛЬЯНСКИЙ РЕСТОРАН", header_subtitle: "МЕНЮ",
+                nav_antipasti: "Закуски", nav_primi: "Домашняя паста", nav_pasta: "Паста из твердых сортов", nav_secondi: "Основные блюда", nav_pizza: "Пицца", nav_contorni: "Гарниры", nav_dolci: "Десерты и напитки",
+                sec_antipasti: "I. Закуски и стартеры", sec_primi: "A. Домашняя паста", sec_pasta: "B. Паста из твердых сортов пшеницы", sec_secondi: "III. Основные блюда", sec_pizza: "IV. Пицца", sec_contorni: "Гарниры", sec_dolci: "Десерты и напитки",
+                antipasti_1_name: "Брускетта с помидорами", antipasti_1_desc: "Поджаренный хлеб со свежими помидорами",
+                antipasti_2_name: "Брускетта с рыбой", antipasti_2_desc: "Поджаренный хлеб с маринованной рыбой",
+                antipasti_3_name: "Аранчини с рисом", antipasti_3_desc: "Жареные рисовые крокеты с мясным соусом и грибами",
+                antipasti_4_name: "Картофельные крокеты", antipasti_4_desc: "Жареные картофельные крокеты",
+                antipasti_5_name: "Скаморца на гриле", antipasti_5_desc: "Сыр скаморца на гриле",
+                antipasti_6_name: "Салат Капрезе", antipasti_6_desc: "Свежая моцарелла, свежие помидоры",
+                primi_1_name: "Ньокки с помидорами и базиликом", primi_1_desc: "Ньокки с томатами и базиликом",
+                primi_2_name: "Ньокки с рагу или соррентино", primi_2_desc: "Горгонзола или грибы (мясной соус / горгонзола / грибы)",
+                primi_3_name: "Равиоли с рикоттой и шпинатом", primi_3_desc: "С начинкой из рикотты/шпината или горгонзолы/грибов",
+                primi_4_name: "Лазанья с мясным соусом", primi_4_desc: "Лазанья Болоньезе (мясной соус)",
+                primi_5_name: "Овощная лазанья", primi_5_desc: "Вегетарианская лазанья",
+                pasta_1_name: "Спагетти с моллюсками", pasta_1_desc: "Спагетти с моллюсками (вонголе)",
+                pasta_2_name: "Спагетти il punto", pasta_2_desc: "Спагетти с морепродуктами",
+                pasta_3_name: "Пенне Аррабьята", pasta_3_desc: "Пенне с острым томатным соусом",
+                secondi_1_name: "Куриная грудка на гриле", secondi_1_desc: "Нарезанная куриная грудка на гриле",
+                secondi_2_name: "Куриная грудка в соусе", secondi_2_desc: "Лимонный соус, сыр горгонзола, черный перец, грибы, бальзамический уксус",
+                secondi_3_name: "Филе говядины на гриле", secondi_3_desc: "Филе говядины на гриле",
+                secondi_4_name: "Филе говядины с горгонзолой", secondi_4_desc: "Сыр горгонзола, черный перец, грибы, бальзамический уксус",
+                secondi_5_name: "Тальята из говядины", secondi_5_desc: "Нарезанное филе говядины на гриле с рукколой, хлопьями пармезана и бальзамиком",
+                secondi_6_name: "Креветки на гриле", secondi_6_desc: "Креветки на гриле (цена по запросу)",
+                secondi_note: "По предварительному заказу: Сибас, Осьминог с картофелем, Креветки на гриле, Жареные кальмары и креветки, Краб, Лобстер.",
+                pizza_1_name: "Маргарита", pizza_1_desc: "Сыр моцарелла и томатный соус",
+                pizza_2_name: "Четыре сыра", pizza_2_desc: "Четыре сыра (Моцарелла, руккола, хлопья пармезана)",
+                pizza_3_name: "Салями", pizza_3_desc: "Салями",
+                pizza_4_name: "Тунец и лук", pizza_4_desc: "Тунец, лук, моцарелла, томатный соус",
+                pizza_5_name: "Грибы", pizza_5_desc: "Грибы (сыр моцарелла и томатный соус)",
+                contorni_1_name: "Овощи на гриле", contorni_1_desc: "Овощи на гриле",
+                contorni_2_name: "Запеченный картофель", contorni_2_desc: "Запеченный картофель",
+                contorni_3_name: "Зеленый или смешанный салат", contorni_3_desc: "Зеленый салат или смешанный салат",
+                dolci_1_name: "Тирамису", dolci_2_name: "Шоколадный флан", dolci_2_desc: "Шоколадный флан", dolci_3_name: "Панна котта",
+                dolci_4_name: "Вода без газа (1/2 литра)", dolci_4_desc: "Вода без газа 1/2 л", dolci_5_name: "Газированная вода (1/2 литра)", dolci_5_desc: "Газированная вода 1/2 л",
+                dolci_6_name: "Вода без газа (1 литр)", dolci_6_desc: "Вода без газа 1 л", dolci_7_name: "Кока-кола - Фанта - Спрайт",
+                dolci_8_name: "Эспрессо", dolci_9_name: "Чай", dolci_10_name: "Капучино",
+                footer_note_1: "Цена не включает обслуживание или налоги", footer_note_2: "لا يوجد ضريبة ولا خدمة"
+            }
+        };
+
+        // دالة تغيير اللغة
+        function changeLanguage(lang, btnElement) {
+            // تحديث اتجاه الصفحة
+            document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+
+            // تحديث النصوص
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // تحديث حالة الأزرار
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            btnElement.classList.add('active');
+        }
+
+        // Smooth Scrolling (التمرير السلس)
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80, // تعديل المسافة بسبب القائمة الثابتة
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
